@@ -61,6 +61,8 @@ app.use("/imagenes", express.static(path.join(__dirname, "public/imagenes")));
 app.use(express.static(path.join(__dirname, "public")));
 
 // INICIAR SERVIDOR
-app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(
+    `Servidor backend corriendo en https://automundo-aqarbhcmbteegrcv.canadacentral-01.azurewebsites.net:${PORT}`
+  );
 });
