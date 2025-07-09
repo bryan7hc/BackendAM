@@ -1,8 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { AppDataSource } from "./config/db.js"; // 🔧 Asegúrate de tener este archivo
-
 import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
 import vehiculosRoute from "./routes/vehiculosRoute.js";
@@ -21,25 +19,28 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-const PORT = process.env.PORT || 443; // Mejor usar 3000 localmente
+const PORT = process.env.PORT || 443; // Usar el puerto 443 en producción
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Redirigir HTTP a HTTPS en producción
+app.use((req, res, next) => {
+  if (req.headers["x-forwarded-proto"] !== "https") {
+    return res.redirect("https://" + req.headers.host + req.url);
+  }
+  next();
+});
+
 // Middleware
 app.use(
   cors({
-    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net",
+    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // Cambia esta URL por tu frontend
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
 app.use(express.json());
-
-// Rutas de prueba
-app.get("/", (req, res) => {
-  res.send("Bienvenido al backend de Automundo!");
-});
 
 // Rutas
 app.use("/api/auth", authRoute);
@@ -54,14 +55,11 @@ app.use("/api/proveedores", proveedorRoutes);
 app.use("/api/resenas", resenaRoute);
 app.use("/api/pago", pagoRoute);
 
+// Rutas estáticas
+app.use("/imagenes", express.static(path.join(__dirname, "public/imagenes")));
+app.use(express.static(path.join(__dirname, "public")));
+
 // Iniciar servidor
-AppDataSource.initialize()
-  .then(() => {
-    console.log("✅ Conexión a la base de datos exitosa");
-    app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error("❌ Error al conectar con la base de datos:", error);
-  });
+app.listen(PORT, () => {
+  console.log(`Servidor backend corriendo en https://localhost:${PORT}`);
+});
