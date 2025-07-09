@@ -24,6 +24,23 @@ const PORT = process.env.PORT || 443; // Usar el puerto 443 en producción
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Configuración de CORS
+const corsOptions = {
+  origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // Cambia esto por el URL de tu frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"], // Los encabezados permitidos
+  credentials: true,
+};
+
+// Middleware CORS
+app.use(cors(corsOptions));
+
+// Middleware para manejar errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Algo salió mal!");
+});
+
 app.get("/", (req, res) => {
   res.send("Bienvenido al backend de Automundo!");
 });
@@ -36,14 +53,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware
-app.use(
-  cors({
-    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // Cambia esta URL por tu frontend
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
+// Middleware para manejar JSON
 app.use(express.json());
 
 // Rutas
@@ -64,6 +74,6 @@ app.use("/imagenes", express.static(path.join(__dirname, "public/imagenes")));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Iniciar servidor
-app.listen(process.env.PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`Servidor backend corriendo en https://localhost:${PORT}`);
 });
