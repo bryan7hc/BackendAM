@@ -27,11 +27,7 @@ const __dirname = path.dirname(__filename);
 
 // MIDDLEWARE
 app.use(
-  cors({
-    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // URL de tu frontend en Azure
-    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
-    allowedHeaders: ["Content-Type", "Authorization"], // Cabeceras permitidas
-  })
+  cors()
 );
 app.use(express.json());
 
