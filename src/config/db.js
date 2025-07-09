@@ -4,10 +4,10 @@ let db;
 
 async function initializeDatabase() {
   db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: "automundo.mysql.database.azure.com", // Reemplaza con tu host de MySQL en Azure
+    user: "superadmin", // Reemplaza con tu usuario de MySQL
+    password: "Admin123", // Reemplaza con tu contraseña de MySQL
+    database: "automundoDB2", // Reemplaza con tu nombre de base de datos
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
