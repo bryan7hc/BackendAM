@@ -28,12 +28,14 @@ const __dirname = path.dirname(__filename);
 // MIDDLEWARE
 app.use(
   cors({
-    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // Cambia con la URL de tu frontend
-    methods: ["GET", "POST"],
+    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // URL de tu frontend en Azure
+    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+    allowedHeaders: ["Content-Type", "Authorization"], // Cabeceras permitidas
   })
 );
 app.use(express.json());
 
+// Rutas de prueba
 app.get("/", (req, res) => {
   res.send("Bienvenido al backend de Automundo!");
 });
@@ -51,19 +53,19 @@ app.use("/api/proveedores", proveedorRoutes);
 app.use("/api/resenas", resenaRoute);
 app.use("/api/pago", pagoRoute);
 
-// Archivos estáticos
+// Configuración de archivos estáticos (si fuera necesario)
+app.use(express.static(path.join(__dirname, "public")));
 
+// Conexión a la base de datos (usando TypeORM o cualquier ORM que estés usando)
+import { AppDataSource } from "./data-source";  // Asegúrate de importar correctamente tu conexión a la base de datos
 
-
-
-// Conexión a la base de datos
 AppDataSource.initialize()
   .then(() => {
-    console.log('Conexión a la base de datos exitosa');
+    console.log("✅ Conexión a la base de datos exitosa");
     app.listen(PORT, () => {
-      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
     });
   })
   .catch((error) => {
-    console.error('Error al conectar con la base de datos:', error);
+    console.error("❌ Error al conectar con la base de datos:", error);
   });
