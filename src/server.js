@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import { AppDataSource } from "./config/data-source.js"; // 🔧 Asegúrate de tener este archivo
+
 import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
 import vehiculosRoute from "./routes/vehiculosRoute.js";
@@ -19,17 +21,17 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-const PORT = process.env.PORT || 443; // Usa el puerto de Azure, o 443 por defecto
+const PORT = process.env.PORT || 3000; // Mejor usar 3000 localmente
 
-// Necesario para usar __dirname con ESModules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// MIDDLEWARE
+// Middleware
 app.use(
   cors({
-    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // Cambia con la URL de tu frontend
-    methods: ["GET", "POST"],
+    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -39,7 +41,7 @@ app.get("/", (req, res) => {
   res.send("Bienvenido al backend de Automundo!");
 });
 
-// RUTAS
+// Rutas
 app.use("/api/auth", authRoute);
 app.use("/api/usuarios", userRoute);
 app.use("/api/vehiculos", vehiculosRoute);
@@ -52,9 +54,7 @@ app.use("/api/proveedores", proveedorRoutes);
 app.use("/api/resenas", resenaRoute);
 app.use("/api/pago", pagoRoute);
 
-
-
-
+// Iniciar servidor
 AppDataSource.initialize()
   .then(() => {
     console.log("✅ Conexión a la base de datos exitosa");
