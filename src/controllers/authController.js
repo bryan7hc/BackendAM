@@ -11,29 +11,32 @@ export const loginUsuario = async (req, res) => {
       [correo]
     );
 
+    console.log("Resultado DB:", results);
+
     if (results.length === 0) {
       console.log("Usuario no encontrado");
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
     const usuario = results[0];
+    console.log("Usuario encontrado:", usuario);
 
-    // ✅ Validar que el usuario no esté eliminado
     if (usuario.estado && usuario.estado.toLowerCase() === "eliminado") {
       console.log("Usuario eliminado intentando iniciar sesión");
       return res
         .status(403)
-        .json({ error: "Este usuario ha sido eliminado y no puede iniciar sesión." });
+        .json({
+          error: "Este usuario ha sido eliminado y no puede iniciar sesión.",
+        });
     }
 
     const hash = usuario["contraseña"];
-
-    console.log("Comparando hash con contraseña...");
+    console.log("Hash obtenido:", hash);
 
     const isMatch = await bcrypt.compare(contraseña, hash);
+    console.log("¿Contraseña válida?", isMatch);
 
     if (!isMatch) {
-      console.log("Contraseña incorrecta");
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 

@@ -1,28 +1,29 @@
 import mysql from "mysql2/promise";
 
-let db; // Declarar el pool de conexiones fuera de la función
+let db;
 
 async function initializeDatabase() {
   db = mysql.createPool({
-    host: "automundo.mysql.database.azure.com",
-    user: "superadmin",
-    password: "Admin123",
-    database: "automundoDB2",
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
+    ssl: {
+      rejectUnauthorized: true, // Azure requiere SSL
+    },
   });
 
   try {
     const connection = await db.getConnection();
-    console.log("Conexión a la base de datos MySQL establecida (con pool)");
-    connection.release(); // Libera la conexión
+    console.log("✅ Conexión a MySQL en Azure establecida");
+    connection.release();
   } catch (err) {
-    console.error("Error de conexión con MySQL:", err);
+    console.error("❌ Error conectando a MySQL:", err);
   }
 }
 
-// Ejecutar la inicialización y exportar después de asegurarnos de que está bien configurado
 await initializeDatabase();
-
-export default db; // Exportar db después de la inicialización
+export default db;
