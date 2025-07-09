@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:3000/api/admin";
+const API_URL = "automundo-aqarbhcmbteegrcv.canadacentral-01.azurewebsites.net";
 
 // ==================== USUARIOS ====================
 
