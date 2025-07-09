@@ -73,7 +73,15 @@ app.use("/api/pago", pagoRoute);
 app.use("/imagenes", express.static(path.join(__dirname, "public/imagenes")));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en https://localhost:${PORT}`);
-});
+
+// Conexión a la base de datos
+AppDataSource.initialize()
+  .then(() => {
+    console.log('Conexión a la base de datos exitosa');
+    app.listen(PORT, () => {
+      console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error al conectar con la base de datos:', error);
+  });
