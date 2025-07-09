@@ -1,9 +1,9 @@
 import mysql from "mysql2/promise";
 
 const db = await mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "123456789",
+  host: "automundo.mysql.database.azure.com",
+  user: "superadmin",
+  password: "Admin123",
   database: "automundoDB2",
   waitForConnections: true,
   connectionLimit: 10,
