@@ -1,7 +1,9 @@
 import mysql from "mysql2/promise";
 
+let db; // Declarar el pool de conexiones fuera de la función
+
 async function initializeDatabase() {
-  const db = await mysql.createPool({
+  db = mysql.createPool({
     host: "automundo.mysql.database.azure.com",
     user: "superadmin",
     password: "Admin123",
@@ -14,11 +16,12 @@ async function initializeDatabase() {
   try {
     const connection = await db.getConnection();
     console.log("Conexión a la base de datos MySQL establecida (con pool)");
-    connection.release();
+    connection.release(); // Libera la conexión
   } catch (err) {
     console.error("Error de conexión con MySQL:", err);
   }
 }
 
-initializeDatabase();
-export default db;
+initializeDatabase(); // Ejecutar la inicialización
+
+export default db; // Exportar db después de la inicialización
