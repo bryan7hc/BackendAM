@@ -64,6 +64,6 @@ app.use("/imagenes", express.static(path.join(__dirname, "public/imagenes")));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en https://localhost:${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
 });
