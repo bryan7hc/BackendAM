@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { AppDataSource } from "./config/data-source.js"; // 🔧 Asegúrate de tener este archivo
+import { AppDataSource } from "./config/db.js"; // 🔧 Asegúrate de tener este archivo
 
 import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
@@ -21,7 +21,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-const PORT = process.env.PORT || 443; // Mejor usar 3000 localmente
+const PORT = process.env.PORT || 3000; // Mejor usar 3000 localmente
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
