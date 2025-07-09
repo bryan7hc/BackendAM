@@ -26,14 +26,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // MIDDLEWARE
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // Cambia con la URL de tu frontend
+    methods: ["GET", "POST"],
+  })
+);
 app.use(express.json());
-
 
 app.get("/", (req, res) => {
   res.send("Bienvenido al backend de Automundo!");
 });
-
 
 // RUTAS
 app.use("/api/auth", authRoute);
@@ -49,7 +52,6 @@ app.use("/api/resenas", resenaRoute);
 app.use("/api/pago", pagoRoute);
 
 // Archivos estáticos
-
 
 app.use(
   "/comprobantes",
