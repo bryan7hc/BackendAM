@@ -24,6 +24,10 @@ const PORT = process.env.PORT || 443; // Usar el puerto 443 en producción
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.get("/", (req, res) => {
+  res.send("Bienvenido al backend de Automundo!");
+});
+
 // Redirigir HTTP a HTTPS en producción
 app.use((req, res, next) => {
   if (req.headers["x-forwarded-proto"] !== "https") {
