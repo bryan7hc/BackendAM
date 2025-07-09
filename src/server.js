@@ -24,6 +24,10 @@ const PORT = process.env.PORT || 443; // Usar el puerto 443 en producción
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.get("/", (req, res) => {
+  res.send("Bienvenido al backend de Automundo!");
+});
+
 // Redirigir HTTP a HTTPS en producción
 app.use((req, res, next) => {
   if (req.headers["x-forwarded-proto"] !== "https") {
@@ -60,6 +64,6 @@ app.use("/imagenes", express.static(path.join(__dirname, "public/imagenes")));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`Servidor backend corriendo en https://localhost:${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${process.env.PORT}`);
 });

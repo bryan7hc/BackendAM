@@ -82,66 +82,81 @@ export const getVehiculos = async (req, res) => {
 };
 
 // Agregar un nuevo vehículo
+// Controlador para agregar vehículo
 export const addVehiculo = async (req, res) => {
-  const {
-    nombre,
-    precio,
-    categoria,
-    stock,
-    marca_id,
-    descripcion,
-    imagen,
-    modelo,
-    color,
-    motor,
-    transmision,
-    kilometraje,
-    combustible,
-    puertas,
-    asientos,
-    condicion,
-    garantia,
-    ubicacion,
-    destacado,
-  } = req.body;
-
-  const slug = slugify(nombre);
-
   try {
-    await db.query(
-      `INSERT INTO Vehiculos 
-       (nombre, precio, categoria, stock, marca_id, descripcion,
-        imagen, modelo, color, motor, transmision,
-        kilometraje, combustible, puertas, asientos,
-        condicion, garantia, ubicacion, destacado, slug, estado)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'activo')`,
-      [
-        nombre,
-        precio,
-        categoria,
-        stock,
-        marca_id,
-        descripcion,
-        imagen,
-        modelo,
-        color,
-        motor,
-        transmision,
-        kilometraje,
-        combustible,
-        puertas,
-        asientos,
-        condicion,
-        garantia,
-        ubicacion,
-        destacado ? 1 : 0,
-        slug,
-      ]
-    );
-    res.status(201).json({ message: "Vehículo agregado correctamente" });
+    const {
+      nombre,
+      precio,
+      categoria,
+      stock,
+      marca_id,
+      descripcion,
+      imagen,
+      modelo,
+      color,
+      motor,
+      transmision,
+      kilometraje,
+      combustible,
+      puertas,
+      asientos,
+      condicion,
+      garantia,
+      ubicacion,
+      destacado,
+      slug,
+      estado,
+    } = req.body;
+
+    // Validar que todos los datos estén presentes
+    if (!nombre || !precio || !categoria || !stock || !marca_id || !slug) {
+      return res.status(400).json({ error: "Faltan datos obligatorios" });
+    }
+
+    // Insertar en la base de datos
+    const query = `
+      INSERT INTO Vehiculos (
+        nombre, precio, categoria, stock, marca_id, descripcion, imagen, 
+        modelo, color, motor, transmision, kilometraje, combustible, puertas, 
+        asientos, condicion, garantia, ubicacion, destacado, slug, estado
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+      nombre,
+      precio,
+      categoria,
+      stock,
+      marca_id,
+      descripcion,
+      imagen,
+      modelo,
+      color,
+      motor,
+      transmision,
+      kilometraje,
+      combustible,
+      puertas,
+      asientos,
+      condicion,
+      garantia,
+      ubicacion,
+      destacado,
+      slug,
+      estado,
+    ];
+
+    const [result] = await db.query(query, values);
+
+    res.status(201).json({
+      message: "Vehículo registrado correctamente",
+      vehiculo_id: result.insertId,
+    });
   } catch (error) {
-    console.error("Error agregando vehículo:", error);
-    res.status(500).json({ error: "Error al agregar vehículo" });
+    console.error("Error al guardar vehículo:", error);
+    res.status(500).json({ error: "Error al guardar el vehículo" });
   }
 };
 
