@@ -22,6 +22,7 @@ async function initializeDatabase() {
   }
 }
 
-initializeDatabase(); // Ejecutar la inicialización
+// Ejecutar la inicialización y exportar después de asegurarnos de que está bien configurado
+await initializeDatabase();
 
 export default db; // Exportar db después de la inicialización
