@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import userRoute from "./routes/userRoute.js";
@@ -7,7 +7,7 @@ import vehiculosRoute from "./routes/vehiculosRoute.js";
 import pedidosRoute from "./routes/pedidosRoute.js";
 import proveedorRoutes from "./routes/proveedorRoute.js";
 import adminRoutes from "./routes/adminRoute.js";
-import resenaRoute from "./routes/resenaRoute.js"; 
+import resenaRoute from "./routes/resenaRoute.js";
 import reporteRoutes from "./routes/reporteRoute.js";
 import pagoRoute from "./routes/pagoRoute.js";
 import dashboardRoutes from "./routes/dashboardRoute.js";
@@ -19,7 +19,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-const PORT = process.env.PORT || 443;  // Usa el puerto de Azure, o 443 por defecto
+const PORT = process.env.PORT || 443; // Usa el puerto de Azure, o 443 por defecto
 
 // Necesario para usar __dirname con ESModules
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +28,12 @@ const __dirname = path.dirname(__filename);
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
+
+
+app.get("/", (req, res) => {
+  res.send("Bienvenido al backend de Automundo!");
+});
+
 
 // RUTAS
 app.use("/api/auth", authRoute);
@@ -43,6 +49,8 @@ app.use("/api/resenas", resenaRoute);
 app.use("/api/pago", pagoRoute);
 
 // Archivos estáticos
+
+
 app.use(
   "/comprobantes",
   express.static(path.join(__dirname, "src/public/comprobantes"))
