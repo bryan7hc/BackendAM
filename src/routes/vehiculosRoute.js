@@ -15,25 +15,18 @@ import {
 
 const router = express.Router();
 
+
 // 🚨 Orden correcto de rutas
-
-// Ruta para obtener vehículos destacados
 router.get("/destacados", getAutosDestacados);
-
-// Ruta para obtener un vehículo por su slug
 router.get("/slug/:slug", getVehiculoPorSlug);
-
-// Ruta para obtener vehículos por categoría
 router.get("/categoria/:categoria", getVehiculosPorCategoria);
-
-// Ruta para obtener un vehículo por su ID
 router.get("/:id", getVehiculoById);
 
-// Reseñas de un vehículo
-router.get("/:id/resenas", getVehiculoResena); // Obtener reseñas de un vehículo
-router.post("/:id/resenas", addVehiculoResena); // Agregar una reseña a un vehículo
+// Reseñas
+router.get("/:id/resenas", getVehiculoResena);
+router.post("/:id/resenas", addVehiculoResena);
 
-// Ruta para reducir el stock de un vehículo
+// Reducir stock
 router.post("/:id/reducir-stock", reducirStock);
 
 export default router;
