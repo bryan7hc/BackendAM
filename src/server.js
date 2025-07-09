@@ -27,7 +27,10 @@ const __dirname = path.dirname(__filename);
 
 // MIDDLEWARE
 app.use(
-  cors()
+  cors({
+    origin: "https://mango-island-0c7d57410.2.azurestaticapps.net", // Cambia con la URL de tu frontend
+    methods: ["GET", "POST"],
+  })
 );
 app.use(express.json());
 
@@ -49,11 +52,8 @@ app.use("/api/proveedores", proveedorRoutes);
 app.use("/api/resenas", resenaRoute);
 app.use("/api/pago", pagoRoute);
 
-// Configuración de archivos estáticos (si fuera necesario)
-app.use(express.static(path.join(__dirname, "public")));
 
-// Conexión a la base de datos (usando TypeORM o cualquier ORM que estés usando)
-import { AppDataSource } from "./data-source";  // Asegúrate de importar correctamente tu conexión a la base de datos
+
 
 AppDataSource.initialize()
   .then(() => {
